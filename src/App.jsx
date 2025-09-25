@@ -1,25 +1,88 @@
-import React, { useState } from "react";
-import Roleta from "./components/Roleta";
-import QuestionModal from "./components/QuestionModal";
+import React, { useState, useEffect } from "react";
+import PlayerRegistration from "./components/PlayerRegistration";
+import GameScreen from "./components/GameScreen";
+import RankingScreen from "./components/RankingScreen";
 import "./App.css";
 
 function App() {
-  const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [gameState, setGameState] = useState("registration"); // 'registration', 'playing', 'ranking'
+  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [players, setPlayers] = useState([]);
 
-  const handleQuestionSelect = (question) => {
-    setCurrentQuestion(question);
-    setShowModal(true);
+  // Carregar dados do localStorage ao iniciar
+  useEffect(() => {
+    const savedPlayers = localStorage.getItem("odontoGamePlayers");
+    if (savedPlayers) {
+      setPlayers(JSON.parse(savedPlayers));
+    }
+  }, []);
+
+  // Salvar dados no localStorage sempre que players mudar
+  useEffect(() => {
+    if (players.length > 0) {
+      localStorage.setItem("odontoGamePlayers", JSON.stringify(players));
+    }
+  }, [players]);
+
+  const handlePlayerRegistration = (playerData) => {
+    const newPlayer = {
+      ...playerData,
+      id: Date.now(),
+      score: 0,
+      completedAt: null,
+    };
+    setCurrentPlayer(newPlayer);
+    setGameState("playing");
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setCurrentQuestion(null);
+  const handleGameComplete = (finalScore) => {
+    const completedPlayer = {
+      ...currentPlayer,
+      score: finalScore,
+      completedAt: new Date().toISOString(),
+    };
+
+    setPlayers((prevPlayers) => [...prevPlayers, completedPlayer]);
+    setCurrentPlayer(completedPlayer);
+    setGameState("ranking");
   };
 
-  const handleSpinComplete = () => {
-    setIsSpinning(false);
+  const handlePlayAgain = () => {
+    setCurrentPlayer(null);
+    setGameState("registration");
+  };
+
+  const handleViewRanking = () => {
+    setGameState("ranking");
+  };
+
+  const renderCurrentScreen = () => {
+    switch (gameState) {
+      case "registration":
+        return (
+          <PlayerRegistration
+            onPlayerRegistered={handlePlayerRegistration}
+            onViewRanking={players.length > 0 ? handleViewRanking : null}
+          />
+        );
+      case "playing":
+        return (
+          <GameScreen
+            player={currentPlayer}
+            onGameComplete={handleGameComplete}
+          />
+        );
+      case "ranking":
+        return (
+          <RankingScreen
+            players={players}
+            currentPlayer={currentPlayer}
+            onPlayAgain={handlePlayAgain}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -29,21 +92,7 @@ function App() {
         <p>Teste seus conhecimentos em odontologia!</p>
       </header>
 
-      <main className="game-container">
-        <Roleta
-          onQuestionSelect={handleQuestionSelect}
-          isSpinning={isSpinning}
-          setIsSpinning={setIsSpinning}
-          onSpinComplete={handleSpinComplete}
-        />
-
-        {showModal && currentQuestion && (
-          <QuestionModal
-            question={currentQuestion}
-            onClose={handleCloseModal}
-          />
-        )}
-      </main>
+      <main className="game-container">{renderCurrentScreen()}</main>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const QuestionModal = ({ question, onClose }) => {
+const QuestionModal = ({ question, onClose, onAnswerSubmit, roundNumber }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -12,6 +12,9 @@ const QuestionModal = ({ question, onClose }) => {
     const correct = answer === question.correct;
     setIsCorrect(correct);
     setShowResult(true);
+
+    // Notifica o componente pai sobre a resposta
+    onAnswerSubmit(correct);
   };
 
   const resetQuestion = () => {
@@ -34,7 +37,7 @@ const QuestionModal = ({ question, onClose }) => {
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Pergunta de Odontologia</h2>
+          <h2>Rodada {roundNumber + 1}</h2>
           <button className="close-button" onClick={handleClose}>
             ✕
           </button>
@@ -93,8 +96,8 @@ const QuestionModal = ({ question, onClose }) => {
               <div className="result-icon">{isCorrect ? "🎉" : "😔"}</div>
               <h4>
                 {isCorrect
-                  ? "Parabéns! Resposta Correta!"
-                  : "Ops! Resposta Incorreta!"}
+                  ? "Parabéns! Resposta Correta! (+10 pts)"
+                  : "Ops! Resposta Incorreta! (0 pts)"}
               </h4>
               <p className="explanation">
                 <strong>Explicação:</strong> {question.explanation}

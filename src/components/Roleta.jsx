@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import questions from "../data/questions";
 
 const Roleta = ({
+  gameQuestions,
   onQuestionSelect,
   isSpinning,
   setIsSpinning,
   onSpinComplete,
+  currentRound,
+  disabled,
 }) => {
   const [rotation, setRotation] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
@@ -14,43 +16,62 @@ const Roleta = ({
   const segmentAngle = 360 / 15;
 
   const spin = () => {
-    if (isSpinning) return;
+    // Só permite girar se há perguntas disponíveis
+    const availableQuestions = gameQuestions.filter((q) => !q.used);
+
+    if (isSpinning || disabled || availableQuestions.length === 0) return;
 
     setIsSpinning(true);
     setSelectedSegment(null);
 
-    // Gera um número aleatório entre 1080 e 5040 graus (3 a 14 voltas completas)
+    // Gera rotação aleatória (3 a 7 voltas completas)
     const minSpins = 3;
-    const maxSpins = 14;
+    const maxSpins = 7;
     const randomSpins = Math.random() * (maxSpins - minSpins) + minSpins;
-    const finalRotation = randomSpins * 360;
+    const fullRotations = randomSpins * 360;
 
-    // Adiciona um ângulo aleatório para determinar onde vai parar
+    // Adiciona ângulo aleatório para onde vai parar
     const randomAngle = Math.random() * 360;
-    const totalRotation = rotation + finalRotation + randomAngle;
+    const totalRotation = rotation + fullRotations + randomAngle;
 
     setRotation(totalRotation);
 
-    // Calcula qual segmento foi selecionado
+    // Calcula qual segmento foi selecionado após parar
     setTimeout(() => {
-      // A seta aponta para cima (0 graus), então calculamos onde ela parou
-      // Invertemos a rotação porque a roleta gira no sentido horário
-      // mas queremos saber onde a seta "fixa" está apontando
-      const finalAngle = (360 - (totalRotation % 360)) % 360;
+      // A seta aponta para o topo (0°), então calculamos onde a roleta parou
+      // Normalizamos o ângulo final
+      const finalAngle = (360 - (totalRotation % 360) + 360) % 360;
 
-      // Cada segmento tem 24 graus, o primeiro segmento (pergunta 1) vai de 0 a 24 graus
-      // Ajustamos para que o segmento 1 esteja no topo (onde a seta aponta)
-      const segmentIndex = Math.floor(finalAngle / segmentAngle);
-      const selectedQuestion = questions[segmentIndex];
+      // Determina qual segmento a seta está apontando
+      const segmentIndex = Math.floor(finalAngle / segmentAngle) % 15;
+
+      // Mapeia segmento para pergunta (segmento 0 = pergunta 1, etc.)
+      const questionId = segmentIndex + 1;
+
+      // Procura a pergunta correspondente ao segmento
+      let selectedQuestion = gameQuestions.find((q) => q.id === questionId);
+
+      // Se a pergunta do segmento já foi usada, seleciona uma disponível aleatória
+      if (!selectedQuestion || selectedQuestion.used) {
+        const availableQuestions = gameQuestions.filter((q) => !q.used);
+        if (availableQuestions.length > 0) {
+          const randomIndex = Math.floor(
+            Math.random() * availableQuestions.length
+          );
+          selectedQuestion = availableQuestions[randomIndex];
+        }
+      }
 
       setSelectedSegment(segmentIndex);
-      onQuestionSelect(selectedQuestion);
+      if (selectedQuestion) {
+        onQuestionSelect(selectedQuestion);
+      }
       onSpinComplete();
     }, 3000); // Duração da animação
   };
 
   const renderSegments = () => {
-    return questions.map((question, index) => {
+    return Array.from({ length: 15 }, (_, index) => {
       const startAngle = index * segmentAngle;
       const endAngle = (index + 1) * segmentAngle;
 
@@ -76,7 +97,14 @@ const Roleta = ({
       const textY =
         200 + textRadius * Math.sin(((textAngle - 90) * Math.PI) / 180);
 
-      // Cores alternadas para os segmentos
+      // Verifica se a pergunta correspondente a este segmento foi usada
+      const questionId = index + 1;
+      const correspondingQuestion = gameQuestions.find(
+        (q) => q.id === questionId
+      );
+      const isUsed = correspondingQuestion?.used || false;
+
+      // Cores dos segmentos - cinza se usada, colorida se disponível
       const colors = [
         "#FF6B6B",
         "#4ECDC4",
@@ -95,31 +123,51 @@ const Roleta = ({
         "#90CAF9",
       ];
 
+      const segmentColor = isUsed ? "#CCCCCC" : colors[index];
+
       return (
         <g key={index}>
           <path
             d={pathData}
-            fill={colors[index]}
+            fill={segmentColor}
             stroke="#333"
             strokeWidth="2"
-            className={`segment ${selectedSegment === index ? "selected" : ""}`}
+            className={`segment ${
+              selectedSegment === index ? "selected" : ""
+            } ${isUsed ? "used" : ""}`}
+            opacity={isUsed ? 0.5 : 1}
           />
           <text
             x={textX}
             y={textY}
             textAnchor="middle"
             dominantBaseline="middle"
-            fontSize="10"
+            fontSize="12"
             fontWeight="bold"
-            fill="#333"
+            fill={isUsed ? "#999" : "#333"}
             transform={`rotate(${textAngle}, ${textX}, ${textY})`}
           >
-            {index + 1}
+            {questionId}
           </text>
+          {isUsed && (
+            <text
+              x={textX}
+              y={textY + 15}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="16"
+              fill="#999"
+              transform={`rotate(${textAngle}, ${textX}, ${textY + 15})`}
+            >
+              ✓
+            </text>
+          )}
         </g>
       );
     });
   };
+
+  const availableQuestions = gameQuestions.filter((q) => !q.used);
 
   return (
     <div className="roleta-container">
@@ -179,19 +227,37 @@ const Roleta = ({
 
       {/* Botão para girar */}
       <button
-        className={`spin-button ${isSpinning ? "spinning" : ""}`}
+        className={`spin-button ${isSpinning ? "spinning" : ""} ${
+          disabled || availableQuestions.length === 0 ? "disabled" : ""
+        }`}
         onClick={spin}
-        disabled={isSpinning}
+        disabled={isSpinning || disabled || availableQuestions.length === 0}
       >
-        {isSpinning ? "Girando..." : "GIRAR ROLETA"}
+        {isSpinning
+          ? "Girando..."
+          : disabled
+          ? "Jogo Finalizado"
+          : availableQuestions.length === 0
+          ? "Sem Perguntas"
+          : "GIRAR ROLETA"}
       </button>
 
       {/* Informações */}
       <div className="info-panel">
-        <p>Clique no botão para girar a roleta e responder uma pergunta!</p>
+        {!disabled ? (
+          <>
+            <p>Clique no botão para girar a roleta e responder uma pergunta!</p>
+            <p className="round-info">
+              Rodada {currentRound} - {availableQuestions.length} perguntas
+              disponíveis
+            </p>
+          </>
+        ) : (
+          <p>Todas as rodadas foram completadas!</p>
+        )}
         {selectedSegment !== null && !isSpinning && (
           <p className="selected-info">
-            Você selecionou a pergunta número {selectedSegment + 1}!
+            A roleta parou no segmento {selectedSegment + 1}!
           </p>
         )}
       </div>
