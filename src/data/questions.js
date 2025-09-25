@@ -8,10 +8,10 @@ const questions = [
   },
   {
     id: 2,
-    question: "O flúor previne a formação de cáries dentárias?",
-    correct: true,
+    question: "O uso diário de pasta de dente com flúor protege os dentes apenas durante a escovação, sem efeitos duradouros depois?",
+    correct: false,
     explanation:
-      "O flúor fortalece o esmalte dental e ajuda a prevenir a desmineralização causada pelas bactérias, reduzindo significativamente o risco de cáries.",
+      "O flúor presente na pasta de dente não age só durante a escovação. Ele permanece na superfície dos dentes, ajudando a remineralizar o esmalte e tornando os dentes mais resistentes aos ácidos produzidos pelas bactérias, oferecendo proteção contínua contra cáries.",
   },
   {
     id: 3,
@@ -36,10 +36,10 @@ const questions = [
   },
   {
     id: 6,
-    question: "Chicletes sem açúcar podem ajudar na saúde bucal?",
-    correct: true,
+    question: "Pessoas que escovam bem os dentes nunca terão cáries?",
+    correct: false,
     explanation:
-      "Chicletes sem açúcar estimulam a produção de saliva, que neutraliza ácidos e ajuda a limpar a boca, podendo auxiliar na prevenção de cáries.",
+      "Mesmo com boa escovação, fatores como genética, dieta e fluxo salivar influenciam no risco de cárie.",
   },
   {
     id: 7,
@@ -71,10 +71,10 @@ const questions = [
   },
   {
     id: 11,
-    question: "Implantes dentários podem durar a vida toda?",
-    correct: true,
+    question: "O tártaro pode ser removido apenas com escovação em casa?",
+    correct: false,
     explanation:
-      "Com cuidados adequados e boa higiene, implantes dentários podem durar décadas ou até mesmo a vida toda, sendo uma solução permanente.",
+      "O tártaro é mineralizado e só pode ser removido pelo dentista com instrumentos adequados.",
   },
   {
     id: 12,
@@ -92,10 +92,10 @@ const questions = [
   },
   {
     id: 14,
-    question: "Enxaguantes bucais podem substituir a escovação?",
+    question: "Dentes sensíveis sempre indicam cárie?",
     correct: false,
     explanation:
-      "Enxaguantes bucais são complementares à escovação e ao fio dental, mas não substituem a remoção mecânica da placa bacteriana pela escovação.",
+      "Sensibilidade dentária pode ter várias causas, como desgaste do esmalte, retração gengival ou dentes fraturados, nem sempre cárie.",
   },
   {
     id: 15,
