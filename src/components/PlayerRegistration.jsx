@@ -3,8 +3,6 @@ import React, { useState } from "react";
 const PlayerRegistration = ({ onPlayerRegistered, onViewRanking }) => {
   const [formData, setFormData] = useState({
     name: "",
-    age: "",
-    gender: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -15,7 +13,6 @@ const PlayerRegistration = ({ onPlayerRegistered, onViewRanking }) => {
       [name]: value,
     }));
 
-    // Limpa o erro do campo quando o usuário começa a digitar
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -33,16 +30,6 @@ const PlayerRegistration = ({ onPlayerRegistered, onViewRanking }) => {
       newErrors.name = "Nome deve ter pelo menos 2 caracteres";
     }
 
-    if (!formData.age) {
-      newErrors.age = "Idade é obrigatória";
-    } else if (formData.age < 1 || formData.age > 120) {
-      newErrors.age = "Idade deve ser entre 1 e 120 anos";
-    }
-
-    if (!formData.gender) {
-      newErrors.gender = "Selecione o sexo";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -53,8 +40,6 @@ const PlayerRegistration = ({ onPlayerRegistered, onViewRanking }) => {
     if (validateForm()) {
       onPlayerRegistered({
         name: formData.name.trim(),
-        age: parseInt(formData.age),
-        gender: formData.gender,
       });
     }
   };
@@ -82,72 +67,6 @@ const PlayerRegistration = ({ onPlayerRegistered, onViewRanking }) => {
             />
             {errors.name && (
               <span className="error-message">{errors.name}</span>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="age">Idade</label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              value={formData.age}
-              onChange={handleInputChange}
-              placeholder="Digite sua idade"
-              min="1"
-              max="120"
-              className={errors.age ? "error" : ""}
-            />
-            {errors.age && <span className="error-message">{errors.age}</span>}
-          </div>
-
-          <div className="form-group">
-            <label>Sexo</label>
-            <div className="gender-options">
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="feminino"
-                  checked={formData.gender === "feminino"}
-                  onChange={handleInputChange}
-                />
-                <span className="gender-label">
-                  <span className="gender-icon">♀️</span>
-                  Feminino
-                </span>
-              </label>
-
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="masculino"
-                  checked={formData.gender === "masculino"}
-                  onChange={handleInputChange}
-                />
-                <span className="gender-label">
-                  <span className="gender-icon">♂️</span>
-                  Masculino
-                </span>
-              </label>
-
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="outro"
-                  checked={formData.gender === "outro"}
-                  onChange={handleInputChange}
-                />
-                <span className="gender-label">
-                  <span className="gender-icon">⚧️</span>
-                  Outro
-                </span>
-              </label>
-            </div>
-            {errors.gender && (
-              <span className="error-message">{errors.gender}</span>
             )}
           </div>
 

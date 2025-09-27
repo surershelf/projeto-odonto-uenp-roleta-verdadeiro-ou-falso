@@ -41,18 +41,7 @@ const RankingScreen = ({ players, currentPlayer, onPlayAgain }) => {
     });
   };
 
-  const getGenderIcon = (gender) => {
-    switch (gender) {
-      case "feminino":
-        return "♀️";
-      case "masculino":
-        return "♂️";
-      case "outro":
-        return "⚧️";
-      default:
-        return "👤";
-    }
-  };
+  
 
   const averageScore =
     players.length > 0
@@ -151,9 +140,6 @@ const RankingScreen = ({ players, currentPlayer, onPlayAgain }) => {
               <div className="col-player">
                 <div className="player-info">
                   <span className="player-name">{player.name}</span>
-                  <span className="player-details">
-                    {getGenderIcon(player.gender)} {player.age} anos
-                  </span>
                 </div>
               </div>
               <div className="col-score">

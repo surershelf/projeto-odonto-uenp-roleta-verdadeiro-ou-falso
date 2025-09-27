@@ -3,6 +3,7 @@ import PlayerRegistration from "./components/PlayerRegistration";
 import GameScreen from "./components/GameScreen";
 import RankingScreen from "./components/RankingScreen";
 import "./App.css";
+import uenpImg from "./assets/UENP.png";
 
 function App() {
   const [gameState, setGameState] = useState("registration"); // 'registration', 'playing', 'ranking'
@@ -88,7 +89,8 @@ function App() {
   return (
     <div className="App">
       <header className="app-header">
-        <h1>🦷 Roleta Odontológica</h1>
+        <img src={uenpImg} alt="Logo UENP"/>
+        <h1> ROLETA ODONTOLÓGICA</h1>
         <p>Teste seus conhecimentos em odontologia!</p>
       </header>
 

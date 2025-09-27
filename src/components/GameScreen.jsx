@@ -76,17 +76,6 @@ const GameScreen = ({ player, onGameComplete }) => {
       <div className="game-header">
         <div className="player-info">
           <h2>👋 Olá, {player.name}!</h2>
-          <div className="player-stats">
-            <span className="age">📅 {player.age} anos</span>
-            <span className="gender">
-              {player.gender === "feminino"
-                ? "♀️"
-                : player.gender === "masculino"
-                ? "♂️"
-                : "⚧️"}
-              {player.gender.charAt(0).toUpperCase() + player.gender.slice(1)}
-            </span>
-          </div>
         </div>
       </div>
 
