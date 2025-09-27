@@ -4,7 +4,7 @@ import QuestionModal from "./QuestionModal";
 import questions from "../data/questions";
 
 const GameScreen = ({ player, onGameComplete }) => {
-  const [currentRound, setCurrentRound] = useState(1);
+  const [currentRound, setCurrentRound] = useState(10);
   const [score, setScore] = useState(0);
   const [gameQuestions, setGameQuestions] = useState([...questions]); // Cópia local das perguntas
   const [currentQuestion, setCurrentQuestion] = useState(null);
