@@ -136,10 +136,12 @@ const Roleta = ({
     <div className="roleta-container">
       <div className="roleta-wrapper" style={{ position: "relative" }}>
         <svg
-          width="400"
-          height="400"
+          viewBox="0 0 400 400"
           className="roleta-svg"
           style={{
+            width: "100%",       // ocupa todo espaço disponível
+            height: "auto",      // mantém proporção
+            maxWidth: "400px",   // limite no desktop
             transform: `rotate(${rotation}deg)`,
             transition: isSpinning
               ? "transform 3s cubic-bezier(0.23, 1, 0.320, 1)"

@@ -402,212 +402,231 @@ html, body {
   }
 
   /* ===============================================
-   ROLETA
+   ROLETA RESPONSIVA
    =============================================== */
-  .roleta-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 15px 35px rgba(21, 101, 192, 0.2);
-  }
-  .roleta-logo {
+.roleta-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 35px rgba(21, 101, 192, 0.2);
+  width: 100%;
+  max-width: 500px; /* centralizar bem em telas grandes */
+  margin: 0 auto;
+}
+
+.roleta-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;   /* limite no desktop */
+  aspect-ratio: 1 / 1; /* sempre quadrada */
+  margin-bottom: 40px;
+  filter: drop-shadow(0 15px 30px rgba(21, 101, 192, 0.3));
+}
+
+.roleta-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-origin: center;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  background: white;
+  border-radius: 50%;
+}
+
+/* Logo central */
+.roleta-logo {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 150px;   /* ajuste conforme tamanho desejado */
-  height: 130px;  /* ajuste conforme tamanho desejado */
+  width: 30%;    /* proporcional à roleta */
+  height: auto;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  pointer-events: none; /* não bloqueia cliques no botão girar */
+  pointer-events: none;
 }
 
+/* Ponteiro */
+.ponteiro {
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
 
+.ponteiro svg {
+  width: 12%;
+  height: auto;
+}
 
-  .roleta-wrapper {
-    position: relative;
-    margin-bottom: 40px;
-    filter: drop-shadow(0 15px 30px rgba(21, 101, 192, 0.3));
+.ponteiro svg polygon {
+  fill: #183a84;
+  stroke: white;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.ponteiro:hover svg polygon {
+  fill: #0d47a1;
+  transform: scale(1.1);
+}
+
+/* Segmentos da roleta */
+.segment {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.segment:hover {
+  filter: brightness(1.1);
+  stroke-width: 3;
+}
+
+.segment.selected {
+  filter: brightness(1.2) saturate(1.3);
+  stroke: #1565c0;
+  stroke-width: 4;
+  animation: pulse 0.5s ease-in-out;
+}
+
+.segment.used {
+  cursor: not-allowed;
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.segment.used:hover {
+  filter: grayscale(100%) brightness(0.9);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Botão girar */
+.spin-button {
+  background: linear-gradient(45deg, #1976d2, #183a84);
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(21, 101, 192, 0.4);
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.spin-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.spin-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(21, 101, 192, 0.5);
+  background: linear-gradient(45deg, #1565c0, #0d47a1);
+}
+
+.spin-button:hover::before {
+  left: 100%;
+}
+
+.spin-button:active {
+  transform: translateY(-1px);
+}
+
+.spin-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spin-button.spinning {
+  animation: buttonPulse 1s infinite;
+  background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(21, 101, 192, 0.4);
   }
-
-  .roleta-svg {
-    display: block;
-    transform-origin: center;
-    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-    background: white;
-    border-radius: 50%;
+  50% {
+    box-shadow: 0 12px 35px rgba(79, 195, 247, 0.6);
   }
+}
 
-  .segment {
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+/* Info abaixo */
+.info-panel {
+  text-align: center;
+  margin-top: 15px;
+  color: #183a84;
+  width: 100%;
+}
 
-  .segment:hover {
-    filter: brightness(1.1);
-    stroke-width: 3;
-  }
+.info-panel p {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
 
-  .segment.selected {
-    filter: brightness(1.2) saturate(1.3);
-    stroke: #1565c0;
-    stroke-width: 4;
-    animation: pulse 0.5s ease-in-out;
-  }
+.selected-info {
+  background: linear-gradient(45deg, #4caf50, #66bb6a);
+  color: white !important;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  animation: slideIn 0.5s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
 
-  .segment.used {
-    cursor: not-allowed;
-    filter: grayscale(100%);
-  }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  .segment.used:hover {
-    filter: grayscale(100%) brightness(0.9);
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.02);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .ponteiro {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  }
-
-  .ponteiro svg polygon {
-    fill: #183a84;
-    stroke: white;
-    stroke-width: 2;
-    transition: all 0.3s ease;
-  }
-
-  .ponteiro:hover svg polygon {
-    fill: #0d47a1;
-    transform: scale(1.1);
+/* ===============================================
+   RESPONSIVIDADE
+   =============================================== */
+@media (max-width: 600px) {
+  .roleta-container {
+    padding: 15px;
   }
 
   .spin-button {
-    background: linear-gradient(45deg, #1976d2, #183a84);
-    color: white;
-    border: none;
-    padding: 18px 40px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 25px rgba(21, 101, 192, 0.4);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .spin-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-
-  .spin-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(21, 101, 192, 0.5);
-    background: linear-gradient(45deg, #1565c0, #0d47a1);
-  }
-
-  .spin-button:hover::before {
-    left: 100%;
-  }
-
-  .spin-button:active {
-    transform: translateY(-1px);
-  }
-
-  .spin-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .spin-button.spinning {
-    animation: buttonPulse 1s infinite;
-    background: linear-gradient(45deg, #4fc3f7, #29b6f6);
-  }
-
-  .spin-button.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    background: #bdbdbd;
-  }
-
-  @keyframes buttonPulse {
-    0%,
-    100% {
-      box-shadow: 0 8px 25px rgba(21, 101, 192, 0.4);
-    }
-    50% {
-      box-shadow: 0 12px 35px rgba(79, 195, 247, 0.6);
-    }
-  }
-
-  .info-panel {
-    text-align: center;
-    margin-top: 20px;
-    color: #183a84;
+    padding: 12px 25px;
+    font-size: 1rem;
   }
 
   .info-panel p {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    font-weight: 500;
+    font-size: 0.95rem;
   }
+}
 
-  .selected-info {
-    background: linear-gradient(45deg, #4caf50, #66bb6a);
-    color: white !important;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    animation: slideIn 0.5s ease;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
   /* ===============================================
    MODAL DE PERGUNTAS
