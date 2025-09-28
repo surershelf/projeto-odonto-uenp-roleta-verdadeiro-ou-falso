@@ -160,12 +160,12 @@ const Roleta = ({
           className="roleta-logo"
         />
 
-        {/* Ponteiro fixo */}
         <div className="ponteiro">
-          <svg width="40" height="60">
-            <polygon points="20,50 35,10 5,10" fill="#1565c0" stroke="#fff" strokeWidth="2" />
+          <svg viewBox="0 -10 38 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <polygon points="20,50 35,10 5,10" />
           </svg>
         </div>
+
       </div>
 
       <button

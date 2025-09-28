@@ -453,7 +453,7 @@ html, body {
 /* Ponteiro */
 .ponteiro {
   position: absolute;
-  top: -8%;
+  top: -22px;              /* fixa na borda superior da roleta */
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -461,8 +461,10 @@ html, body {
 }
 
 .ponteiro svg {
-  width: 12%;
+  width: 50px;             /* tamanho fixo no desktop */
   height: auto;
+  max-width: 14%;          /* no mobile escala proporcional */
+  min-width: 30px;         /* nunca fica pequeno demais */
 }
 
 .ponteiro svg polygon {
