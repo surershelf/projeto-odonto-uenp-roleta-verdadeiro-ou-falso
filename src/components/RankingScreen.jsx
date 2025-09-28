@@ -1,16 +1,12 @@
 import React from "react";
 
 const RankingScreen = ({ players, currentPlayer, onPlayAgain }) => {
-  // Ordena os jogadores por pontuação (maior para menor) e depois por data
-  const sortedPlayers = [...players].sort((a, b) => {
-    if (b.score !== a.score) {
-      return b.score - a.score;
-    }
-    return new Date(a.completedAt) - new Date(b.completedAt);
-  });
+  // Firestore já retorna os jogadores ordenados (score desc, data asc)
+  const sortedPlayers = players;
 
   const getRankingPosition = (playerId) => {
-    return sortedPlayers.findIndex((p) => p.id === playerId) + 1;
+    const index = sortedPlayers.findIndex((p) => p.id === playerId);
+    return index >= 0 ? index + 1 : "-";
   };
 
   const getMedalIcon = (position) => {
@@ -27,11 +23,13 @@ const RankingScreen = ({ players, currentPlayer, onPlayAgain }) => {
   };
 
   const getScorePercentage = (score) => {
-    return (score / 100) * 100; // 100 pontos é o máximo (10 perguntas x 10 pontos)
+    return (score / 100) * 100; // 100 pontos = aproveitamento total
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return "-";
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "-";
     return date.toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
@@ -40,8 +38,6 @@ const RankingScreen = ({ players, currentPlayer, onPlayAgain }) => {
       minute: "2-digit",
     });
   };
-
-  
 
   const averageScore =
     players.length > 0
