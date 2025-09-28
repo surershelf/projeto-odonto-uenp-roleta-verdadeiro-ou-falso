@@ -15,6 +15,12 @@ html, body {
   background-attachment: fixed; /* mantém fixo no scroll */
   background-size: cover;       /* cobre toda a tela */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, "Amarante", sans-serif;
+  overscroll-behavior: none; /* evita efeito bounce mudar cor */
+}
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-color: #90caf9; /* fallback para iOS */
+  }
 }
 
 /* Remove o background do #root para não sobrescrever */
@@ -24,16 +30,6 @@ html, body {
   padding: 2rem;
   text-align: center;
 }
-
-
-  body {
-    font-family: "Segoe UI", Tahoma, Geneva,"Amarante", Verdana, sans-serif;
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%) !important;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    color: #183a84 !important;
-  }
 
   /* Padrão de fundo sutil com textura médica */
   body::before {
