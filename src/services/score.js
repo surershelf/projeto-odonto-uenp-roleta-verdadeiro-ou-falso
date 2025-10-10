@@ -25,7 +25,7 @@ export function subscribeToScores(callback) {
   const q = query(
     collection(db, "scores"),
     orderBy("score", "desc"),
-    orderBy("createdAt", "asc"),
+    orderBy("createdAt", "desc"),
     limit(100)
   );
 
@@ -46,4 +46,3 @@ export function subscribeToScores(callback) {
     callback(players);
   });
 }
-
