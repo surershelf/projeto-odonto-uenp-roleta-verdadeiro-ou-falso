@@ -1,16 +1,123 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🦷 Jogo Verdadeiro ou Falso Odonto  
+**Educação e tecnologia unidas para promover a saúde bucal de forma interativa.**
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧩 Visão Geral
 
-## React Compiler
+O **Jogo Verdadeiro ou Falso Odonto** é uma aplicação web interativa desenvolvida em **React**, utilizada pela **UENP – Universidade Estadual do Norte do Paraná (campus Jacarezinho)** em um **projeto de extensão universitária** voltado à **educação e conscientização sobre saúde bucal**.
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+O jogo apresenta uma **roleta digital** que sorteia perguntas sobre odontologia, incentivando o aprendizado de forma lúdica, dinâmica e acessível.  
+O sistema tem sido aplicado em eventos científicos e educacionais, como o **Paraná Faz Ciência** e a **Genius Con**, aproximando a comunidade acadêmica do público.
 
-## Expanding the ESLint configuration
+🌐 **Hospedagem:** [Render](https://render.com)  
+🐳 **Containerização:** Docker  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ⚙️ Tecnologias Utilizadas
+
+O projeto foi desenvolvido utilizando as seguintes ferramentas e tecnologias:
+
+- **Front-end:** React + JavaScript  
+- **Gerenciamento de Pacotes:** npm  
+- **Banco de Dados:** Firebase (armazenamento e pontuação em tempo real)  
+- **Containerização:** Docker  
+- **Hospedagem:** Render  
+- **Controle de Versão:** Git + GitHub  
+
+---
+
+## 🚀 Funcionalidades Principais
+
+- 🎡 **Roleta interativa:** sorteio de perguntas aleatórias sobre saúde bucal.  
+- ✅ **Sistema de verdadeiro ou falso:** feedback imediato para respostas.  
+- 📊 **Pontuação dinâmica:** acompanhamento em tempo real via Firebase.  
+- 🧱 **Containerização com Docker:** compatibilidade e deploy simplificado.  
+- 🖥️ **Interface responsiva:** experiência fluida em desktop e dispositivos móveis.  
+- 🎓 **Uso acadêmico:** integração com projetos de extensão da área da saúde.  
+
+---
+
+## 🧠 Objetivo Acadêmico
+
+Este projeto faz parte das ações do **programa de extensão da UENP – Jacarezinho**, criado para **levar conhecimento e conscientização sobre saúde bucal** de maneira criativa e tecnológica.  
+Ele serve tanto como ferramenta educacional quanto como demonstração prática do uso da **tecnologia na educação em saúde**.
+
+---
+
+## 🧰 Como Executar o Projeto Localmente
+
+### 🔹 Pré-requisitos
+
+Certifique-se de ter instalado:
+
+- **Node.js** (v16 ou superior)  
+- **npm** (geralmente incluso no Node.js)  
+- **Docker** (opcional, para execução containerizada)
+
+---
+
+### 🔹 Instalação e Execução
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/surershelf/jogo-verdadeiro-falso-odonto
+```
+
+Acesse o diretório:
+
+```bash
+cd jogo-verdadeiro-falso-odonto
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Inicie o projeto:
+
+```bash
+npm start
+```
+
+O projeto estará disponível em:  
+👉 **http://localhost:3000**
+
+---
+
+## 🐳 Execução com Docker
+
+Para rodar a aplicação em container, utilize os comandos:
+
+```bash
+docker build -t jogo-verdadeiro-falso-odonto .
+docker run -p 3000:3000 jogo-verdadeiro-falso-odonto
+```
+
+---
+
+## ☁️ Deploy no Render
+
+1. Crie uma conta em [Render.com](https://render.com)  
+2. Conecte o repositório do GitHub  
+3. Configure as variáveis de ambiente (Firebase e demais chaves, se houver)  
+4. Render executará o build automaticamente a partir do **Dockerfile**
+
+
+---
+
+## 👨‍💻 Autor
+
+**Lucas Aguiar Mazzo**  
+📧 mazzolucas0@gmail.com  
+🔗 [GitHub](https://github.com/surershelf) | [Portfolio](https://surershelf.github.io/Portfolio)
+
+
+
+💡 *Se este projeto te ajudou ou inspirou, deixe uma ⭐ no repositório!*
+
